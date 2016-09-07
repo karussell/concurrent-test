@@ -12,7 +12,7 @@ public class ConcurrentByteArrayRWL implements ConcurrentByteArray {
 
     private final byte[] bytes;
     private final int rowSize;
-    // use row-wise locks later on to replace synchronized
+    // use row-wise locks to replace synchronized
     private final ReadWriteLock[] locks;
     private final int chunkRows = 1024;
 

@@ -123,6 +123,7 @@ public class MyBenchmark {
             service.shutdown();
 
         } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
