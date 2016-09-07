@@ -14,7 +14,7 @@ public class ConcurrentByteArrayRWL implements ConcurrentByteArray {
     private final int rowSize;
     // use row-wise locks to replace synchronized
     private final ReadWriteLock[] locks;
-    private final int chunkRows = 1024;
+    private final int chunkRows = 128;
 
     public ConcurrentByteArrayRWL(int size, int rowSize) {
         this.bytes = new byte[size];

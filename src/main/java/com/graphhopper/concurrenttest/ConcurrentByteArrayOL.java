@@ -10,7 +10,7 @@ public class ConcurrentByteArrayOL implements ConcurrentByteArray {
     private final int rowSize;
     // use row-wise locks later on to replace synchronized
     private final Object[] locks;
-    private final int chunkRows = 1024;
+    private final int chunkRows = 128;
 
     public ConcurrentByteArrayOL(int size, int rowSize) {
         this.bytes = new byte[size];
