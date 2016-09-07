@@ -49,8 +49,8 @@ public class MyBenchmark {
         new MyBenchmark().runThreads(true, new ConcurrentByteArrayRWL(MAX, ROW_SIZE));
     }
 
-    static final int ROW_SIZE = 1024;
-    static final int MAX = 512 * 1024 * ROW_SIZE;
+    static final int ROW_SIZE = 16;
+    static final int MAX = 16 * 512 * 1024 * ROW_SIZE;
 
     @Benchmark
     public void testReadWriteLock() {
@@ -66,7 +66,7 @@ public class MyBenchmark {
         try {
             final int expectedSum = ROW_SIZE * (ROW_SIZE - 1) / 2;
             int cores = 2;
-            int readingThreads = cores * 2 * 4;
+            int readingThreads = cores * 2;
             final Random rand = new Random(0);
 
             // simulate one sequential write
@@ -88,7 +88,7 @@ public class MyBenchmark {
                     }
 
                     // operate a bit longer to really overlap with reading threads
-                    for (int i = 0; i < 5; i++) {
+                    for (int i = 0; i < 4; i++) {
                         for (int pointer = 0; pointer < MAX; pointer += ROW_SIZE) {
                             array.write(pointer, bytes1);
                         }
