@@ -55,7 +55,7 @@ public class MyBenchmark {
 
     @Benchmark
     public void testReadWriteLock() {
-        runThreads(false, new ConcurrentByteArrayRWL(MAX, ROW_SIZE));
+        runThreads(false, new ConcurrentByteArrayRL(MAX, ROW_SIZE));
     }
 
     @Benchmark
