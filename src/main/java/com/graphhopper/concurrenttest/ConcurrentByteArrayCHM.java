@@ -3,7 +3,7 @@ package com.graphhopper.concurrenttest;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Non-blocking and low memory variant. Seems to work perfectly.
+ * Non-blocking and low memory variant. Seems to work perfectly but a lot slower than "OL" variant.
  *
  * See http://stackoverflow.com/q/39675003/194609
  *
