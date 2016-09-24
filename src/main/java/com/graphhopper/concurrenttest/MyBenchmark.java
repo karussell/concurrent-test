@@ -46,11 +46,12 @@ public class MyBenchmark {
     // DO NOT execute this method for performance comparison instead use the JMH method e.g. via 
     // java -jar target/benchmarks.jar -i 10 -wi 10 -f 1
     public static void main(String[] args) {
-        new MyBenchmark().runThreads(true, new ConcurrentByteArrayRWL(MAX, ROW_SIZE));
+        new MyBenchmark().runThreads(true, new ConcurrentByteArrayCHM(MAX, ROW_SIZE));
     }
 
-    static final int ROW_SIZE = 16;
-    static final int MAX = 16 * 512 * 1024 * ROW_SIZE;
+    static final int ROW_SIZE = 64;
+    // multiply by 10 to see advantage of memory usage from CHM!
+    static final int MAX = 1024 * 1024 * ROW_SIZE;
 
     @Benchmark
     public void testReadWriteLock() {
@@ -60,6 +61,11 @@ public class MyBenchmark {
     @Benchmark
     public void testObjectLock() {
         runThreads(false, new ConcurrentByteArrayOL(MAX, ROW_SIZE));
+    }
+
+    @Benchmark
+    public void testConcurrentHashMapCompute() {
+        runThreads(false, new ConcurrentByteArrayCHM(MAX, ROW_SIZE));
     }
 
     public void runThreads(final boolean log, final ConcurrentByteArray array) {
@@ -87,8 +93,8 @@ public class MyBenchmark {
                         System.out.println("start writer");
                     }
 
-                    // operate a bit longer to really overlap with reading threads
-                    for (int i = 0; i < 4; i++) {
+                    // operate a bit longer to really overlap with reading threads                    
+                    for (int i = 0; i < 5; i++) {
                         for (int pointer = 0; pointer < MAX; pointer += ROW_SIZE) {
                             array.write(pointer, bytes1);
                         }
@@ -129,9 +135,9 @@ public class MyBenchmark {
                                     tmpSum += tmpBytes[j];
                                 }
                                 // only 0 and expected sum is allowed, otherwise there are threading issues!
-//                                if (tmpSum != expectedSum && tmpSum != 0) {
-//                                    throw new IllegalStateException("Threading issue sum should be " + expectedSum + " or 0 but was " + tmpSum);
-//                                }
+                                if (tmpSum != expectedSum && tmpSum != 0) {
+                                    throw new IllegalStateException("Threading issue sum should be " + expectedSum + " or 0 but was " + tmpSum);
+                                }
                                 sum += tmpSum;
                                 // System.out.println(i + " reader" + c);
                             }
